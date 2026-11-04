@@ -12,9 +12,9 @@ import static com.example.ai_proj_one.utils.Constants.OPENAI_CHAT_CLIENT_QUALIFI
  *
  */
 @RestController
-@RequestMapping("/ai/openai/chat")
+@RequestMapping("/api/openai/chat")
 public class OpenAIChatController {
-    private final static String SYSTEM_PROMPT = "You are a helpful assistant thats " +
+    private final static String SYSTEM_PROMPT = "You are a helpful assistant that " +
             "summarizes any given content. Ensure the summary is concise, informative " +
             "and captures the key points. Use a friendly and approachable tone while " +
             "maintaining professionalism. DO NOT answer anything other than the " +
@@ -39,22 +39,49 @@ public class OpenAIChatController {
      * @param meetingNotes
      * @return
      */
-    @PostMapping("summarize-meeting-notes")
+    @PostMapping("/summarize-meeting-notes")
     public String summarizeMeetingNotes(@RequestBody String meetingNotes) {
         return chatClient.prompt()
                 .system(SYSTEM_PROMPT)
-                .user(u -> u.text("Web search Can you summarize the following notes " +
-                        "{meeting notes}? Use the format as described in the following " +
-                        "example while doing the summarization. Input: In today's sales" +
-                                " strategy meeting, we reviewed Q3 targets and " +
-                                "performance gaps. A proposal was made to expand into " +
-                                "two new regions. Marketing suggested aligning. Output: Action items: " +
-                        "* Focus on enterprise clients and partnerships" +
-                        "*Explore expansion into two new regions" +
-                        "*Align marketing campaigns with sales objectives" +
-                        "Decisions: enterprise clients prioritized for Q3, marketing " +
-                        "and sales to work jointly on lead conversion.")
+                .user(u -> u
+                        .text("""
+            Can you summarize the following notes?
+
+            Use the format demonstrated in this example:
+
+            Input:
+            In today's sales strategy meeting, we reviewed Q3 targets
+            and performance gaps. A proposal was made to expand into
+            two new regions. Marketing suggested aligning.
+
+            Output:
+            Action items:
+            * Focus on enterprise clients and partnerships
+            * Explore expansion into two new regions
+            * Align marketing campaigns with sales objectives
+
+            Decisions:
+            Enterprise clients prioritized for Q3.
+            Marketing and sales to work jointly on lead conversion.
+
+            Meeting notes:
+            {meetingNotes}
+            """)
                         .param("meetingNotes", meetingNotes))
+                .call()
+                .content();
+    }
+
+
+    /**
+     * call
+     * @param message
+     * @return
+     */
+    @PostMapping("/summarize")
+    public String summarize(@RequestBody String message) {
+        return chatClient.prompt()
+                .user(message)
                 .call()
                 .content();
     }
