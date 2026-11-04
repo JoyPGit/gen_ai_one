@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: gen-ai-java-spring
+  ai:
+    openai:
+      api-key:
