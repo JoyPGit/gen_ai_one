@@ -1,4 +1,4 @@
-package com.example.ai_proj_one.controller;
+package com.example.ai_proj_one.controller.openai;
 
 import com.example.ai_proj_one.service.OpenAILocalService;
 import org.springframework.ai.chat.client.ChatClient;

@@ -1,6 +1,7 @@
 package com.example.ai_proj_one.config;
 
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.ollama.OllamaChatModel;
 import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.context.annotation.*;
 
@@ -27,9 +28,8 @@ public class AIProviderConfig {
         return ChatClient.builder(openAiChatModel).build();
     }
 
-
     @Bean(OLLAMAAI_CHAT_CLIENT_QUALIFIER)
-    ChatClient ollamaAIChatClient(OpenAiChatModel openAiChatModel) {
-        return ChatClient.builder(openAiChatModel).build();
+    ChatClient ollamaAIChatClient(OpenAiChatModel ollamaChatModel) {
+        return ChatClient.builder(ollamaChatModel).build();
     }
 }

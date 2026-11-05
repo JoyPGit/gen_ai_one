@@ -6,12 +6,22 @@ spring:
     name: gen-ai-java-spring
   ai:
     openai:
-      api-key: ${OPENAI_API_KEY}
+      api-key: dummy_string #${OPENAI_API_KEY}
+      base-url: http://localhost:12434/engines/llama.cpp/v1 # using docker url
       chat:
         options:
-          model: gpt-6-luna #can use same as what is for the api key on openai webpage
-
+          model: hf.co/bartowski/google_gemma-3-1b-it-gguf:q4_k_m
+#          model: gpt-6-luna #can use same as what is for the api key on openai webpage
+#    ollama:
+#      base-url: http://localhost:11434
+#      chat:
+#        options:
+#          model: qwen3.5:4b # ollama list
+#          max-new-tokens: 512
+#          temperature: 0.7
 
 logging:
   level:
-    root: INFO
+    org.springframework.ai.openai: TRACE
+    com.openai: DEBUG
+    okhttp3: DEBUG
