@@ -1,4 +1,4 @@
-package com.example.ai_proj_one.controller.dockermodelrunner;
+package com.example.ai_proj_one.chat.dockermodelrunner;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.beans.factory.annotation.Qualifier;

@@ -1,9 +1,13 @@
-package com.example.ai_proj_one.controller.openai;
+package com.example.ai_proj_one.chat.openai.controller;
 
-import com.example.ai_proj_one.service.OpenAILocalService;
+import com.example.ai_proj_one.chat.openai.dto.response.SummarizationResponse;
+import com.example.ai_proj_one.chat.openai.service.OpenAILocalService;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.*;
 
 import static com.example.ai_proj_one.utils.Constants.OPENAI_CHAT_CLIENT_QUALIFIER;
 
@@ -14,7 +18,7 @@ import static com.example.ai_proj_one.utils.Constants.OPENAI_CHAT_CLIENT_QUALIFI
 @RestController
 @RequestMapping("/api/openai/chat")
 public class OpenAIChatController {
-    private final static String SYSTEM_PROMPT = "You are a helpful assistant that " +
+    protected final static String SYSTEM_PROMPT = "You are a helpful assistant that " +
             "summarizes any given content. Ensure the summary is concise, informative " +
             "and captures the key points. Use a friendly and approachable tone while " +
             "maintaining professionalism. DO NOT answer anything other than the " +
@@ -70,6 +74,45 @@ public class OpenAIChatController {
                         .param("meetingNotes", meetingNotes))
                 .call()
                 .content();
+    }
+
+    /**
+     * entity methods accept class type or StructuredOutputConvertor
+     * beanOutputConvertor -> String.format(template, this.jsonSchema);
+     * @param meetingNotes
+     * @return
+     */
+    @PostMapping("/summarize-meeting-notes-structured")
+    public SummarizationResponse summarizeMeetingNotesStructuredOutput(@RequestBody String meetingNotes) {
+        return chatClient.prompt()
+                .system(SYSTEM_PROMPT)
+                .user(u -> u
+                        .text("""
+                                Can you summarize the following notes?
+                                
+                                Use the format demonstrated in this example:
+                                
+                                Input:
+                                In today's sales strategy meeting, we reviewed Q3 targets
+                                and performance gaps. A proposal was made to expand into
+                                two new regions. Marketing suggested aligning.
+                                
+                                Output:
+                                Action items:
+                                * Focus on enterprise clients and partnerships
+                                * Explore expansion into two new regions
+                                * Align marketing campaigns with sales objectives
+                                
+                                Decisions:
+                                Enterprise clients prioritized for Q3.
+                                Marketing and sales to work jointly on lead conversion.
+                                
+                                Meeting notes:
+                                {meetingNotes}
+                                """)
+                        .param("meetingNotes", meetingNotes))
+                .call()
+                .entity(SummarizationResponse.class);
     }
 
 

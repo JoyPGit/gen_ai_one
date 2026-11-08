@@ -1,0 +1,62 @@
+
+- basic spring AI app
+- build AI chat apps using diff models and providers
+	- open ai, hugging face, ollama
+- chat client vs chat model
+- response types, streaming, advisors for pre and post processing around chat client
+- prompt engg best practices
+	- zero/1/few shot prompt
+	- chain of thought
+	- system messages
+	- multiple results
+	- limiting token and cost
+	- variability - top p and top k variables
+	- prompt templates
+- prompt hacking
+	- jail breaking
+	- prompt leaking
+- gen AI and LLM fundamentals
+	- learning types
+	- transformer architecture
+	- attention mechanism
+	- tokenizers
+	- embeddings
+	- positional encoding
+	- token predicition
+	- choosing an LLM model
+- chat memory
+	- in memory
+	- persistent chat memory with postgres
+	- vector store chat memory with `pgvector`
+- multi modality
+	- text-image
+	- image to speech
+- LLM limitations
+	- preventing hallucinations
+	- RAG grounding
+	- tool calling for facts
+	- schema validation
+	- structured output
+- prompt stuffing
+	- splitting and chunking
+	- embeddings
+	- vector databases
+	- similarity search
+	- `RAG flow` use cases advanced retrieval
+- Humans in the loop
+	- Tool calling
+	- agent patterns
+	- autonomous agent vs chained workflow
+- MCP
+	- mp clients and servers
+- Observability
+	- Spring boot 3 observability
+	- actuator, MicroMeter, Prometheus
+	- Loki and Promtail
+	- Tempo, Jaeger, OLTP for traces
+	- Grafana for visualization
+
+
+
+Advanced use cases
+-
