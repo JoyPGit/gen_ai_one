@@ -7,7 +7,7 @@ import java.util.List;
 @Builder
 public record SummarizationResponse(
         List<String> actionItems,
-        List<String>decisions,
+        List<String> decisions,
         String errorMsg
 ) {
 }

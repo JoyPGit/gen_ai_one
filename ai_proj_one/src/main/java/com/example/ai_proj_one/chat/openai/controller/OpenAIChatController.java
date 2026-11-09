@@ -128,4 +128,17 @@ public class OpenAIChatController {
                 .call()
                 .content();
     }
+
+    /**
+     * call
+     * @param message
+     * @return
+     */
+    @PostMapping("/summarize-error")
+    public SummarizationResponse summarizeError(@RequestBody String message) {
+        return chatClient.prompt()
+                .user(message)
+                .call()
+                .entity(SummarizationResponse.class);
+    }
 }

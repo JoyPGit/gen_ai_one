@@ -1,6 +1,8 @@
 package com.example.ai_proj_one.chat.dockermodelrunner;
 
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.prompt.ChatOptions;
+import org.springframework.ai.openai.OpenAiChatOptions;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,9 +46,24 @@ public class DockerModelRunnerController {
     }
 
 
+    /**
+     *
+     * @param message
+     * @return
+     */
     @PostMapping("/linked-post-generator")
     public String linkedPostGenerator(@RequestBody String message) {
+        ChatOptions chatOptions = ChatOptions.builder()
+                .model("hf.co/bartowski/google_gemma-3-1b-it-gguf:q4_k_m")
+//                .maxTokens(50)
+                .temperature(0.5)
+                .topP(0.8)
+                .topK(10
+                )
+                .build();
+
         return chatClient.prompt()
+                .options(chatOptions.mutate())
                 .system(SYSTEM_PROMPT)
                 .user(message)
                 .advisors()

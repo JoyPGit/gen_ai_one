@@ -9,4 +9,6 @@ public class Constants {
             "huggingFaceAIChatClientQualifier";
     public static final String OLLAMAAI_CHAT_CLIENT_QUALIFIER =
             "ollamaAIChatClientQualifier";
+    public static final String SAFEGUARD_ADVISOR = "SAFEGUARD_ADVISOR";
+    public static final String OBJECT_MAPPER = "OBJECT_MAPPER";
 }

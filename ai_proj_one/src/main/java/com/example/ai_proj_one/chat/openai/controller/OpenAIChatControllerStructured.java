@@ -1,7 +1,6 @@
 package com.example.ai_proj_one.chat.openai.controller;
 
 import com.example.ai_proj_one.chat.openai.dto.response.SummarizationResponse;
-import com.openai.client.OpenAIClient;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.converter.*;
 import org.springframework.beans.factory.annotation.Qualifier;
