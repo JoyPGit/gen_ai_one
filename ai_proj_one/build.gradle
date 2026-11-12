@@ -25,6 +25,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
 	implementation 'org.springframework.ai:spring-ai-starter-model-openai'
     implementation 'org.springframework.ai:spring-ai-starter-model-ollama'
+    implementation "ai.djl.sentencepiece:sentencepiece:0.22.1"
+    implementation 'com.knuddels:jtokkit:1.1.0'
 //    runtimeOnly("io.netty:netty-resolver-dns-native-macos:osx-aarch_64")
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
