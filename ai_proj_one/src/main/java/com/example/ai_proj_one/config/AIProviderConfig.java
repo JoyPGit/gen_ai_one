@@ -4,6 +4,7 @@ import com.example.ai_proj_one.chat.advisor.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.*;
+import org.springframework.ai.chat.memory.*;
 import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.*;
@@ -37,6 +38,24 @@ public class AIProviderConfig {
                 .defaultAdvisors(safeGuardAdvisor, systemPromptAdvisor,
                         simpleLoggerAdvisor,
                         errorWrappingAdvisor)
+                .build();
+    }
+
+//    @Bean(OPENAI_CHAT_CLIENT_QUALIFIER)
+//    ChatClient openAIChatClient(OpenAiChatModel openAiChatModel) {
+//        return ChatClient.builder(openAiChatModel)
+//                .defaultAdvisors()
+//                .build();
+//    }
+
+
+    /**
+     */
+    @Bean(OPENAI_CHAT_CLIENT_QUALIFIER_WITH_MEMORY)
+    ChatClient openAIChatClientWithMemory(OpenAiChatModel openAiChatModel,
+                                ChatMemory chatMemory) {
+        return ChatClient.builder(openAiChatModel)
+                .defaultAdvisors(MessageChatMemoryAdvisor.builder(chatMemory).build())
                 .build();
     }
 
@@ -80,5 +99,19 @@ public class AIProviderConfig {
     @Bean(OBJECT_MAPPER)
     ObjectMapper objectMapper() {
         return new ObjectMapper();
+    }
+
+    /**
+     * stores in a concurrent hash map
+     * can use to set max messages in memory
+     * @param chatMemoryRepository
+     * @return
+     */
+    @Bean(CHAT_MEMORY_NON_JDBC)
+    ChatMemory chatMemory(ChatMemoryRepository chatMemoryRepository) {
+        return MessageWindowChatMemory.builder()
+                .chatMemoryRepository(chatMemoryRepository)
+                .maxMessages(20)
+                .build();
     }
 }

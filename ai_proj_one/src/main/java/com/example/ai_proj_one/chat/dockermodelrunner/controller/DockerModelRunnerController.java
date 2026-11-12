@@ -1,11 +1,8 @@
-package com.example.ai_proj_one.chat.dockermodelrunner;
+package com.example.ai_proj_one.chat.dockermodelrunner.controller;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.prompt.ChatOptions;
-import org.springframework.ai.openai.OpenAiChatOptions;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.bind.annotation.*;
-
 import org.springframework.web.bind.annotation.*;
 
 import static com.example.ai_proj_one.utils.Constants.*;
@@ -57,9 +54,8 @@ public class DockerModelRunnerController {
                 .model("hf.co/bartowski/google_gemma-3-1b-it-gguf:q4_k_m")
 //                .maxTokens(50)
                 .temperature(0.5)
-                .topP(0.8)
-                .topK(10
-                )
+//                .topP(0.8)
+//                .topK(10)
                 .build();
 
         return chatClient.prompt()
