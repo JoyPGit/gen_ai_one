@@ -4,18 +4,32 @@ server:
 spring:
   application:
     name: gen-ai-java-spring
+  datasource:
+    url: jdbc:postgresql://localhost:5433/postgres?currentSchema=public&binaryTransfer=true&reWriteBatchedInserts=true&stringtype=unspecified
+    username: postgres
+    password: postgres
+#  sql:
+#    init:
+#      mode: always
+#      data-locations: classpath:/db/data.sql
   ai:
+    chat:
+      memory:
+        repository:
+          jdbc:
+            # for local/dev , let Spring AI create automatically always
+            initialize-schema: always
     openai:
-      api-key: ${OPENAI_API_KEY}
-      chat:
-        options:
-          model: gpt-6-luna #can use same as what is for the api key on openai webpage
-#     for docker model runner
-#      api-key: dummy_string #${OPENAI_API_KEY}
-#      base-url: http://localhost:12434/engines/llama.cpp/v1 # using docker url
+#      api-key: ${OPENAI_API_KEY}
 #      chat:
 #        options:
-#          model: hf.co/bartowski/google_gemma-3-1b-it-gguf:q4_k_m
+#          model: gpt-6-luna #can use same as what is for the api key on openai webpage
+#     for docker model runner
+      api-key: dummy_string #${OPENAI_API_KEY}
+      base-url: http://localhost:12434/engines/llama.cpp/v1 # using docker url
+      chat:
+        options:
+          model: hf.co/bartowski/google_gemma-3-1b-it-gguf:q4_k_m
 
 #    ollama:
 #      base-url: http://localhost:11434

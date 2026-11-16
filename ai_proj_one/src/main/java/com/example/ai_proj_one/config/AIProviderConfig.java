@@ -41,14 +41,6 @@ public class AIProviderConfig {
                 .build();
     }
 
-//    @Bean(OPENAI_CHAT_CLIENT_QUALIFIER)
-//    ChatClient openAIChatClient(OpenAiChatModel openAiChatModel) {
-//        return ChatClient.builder(openAiChatModel)
-//                .defaultAdvisors()
-//                .build();
-//    }
-
-
     /**
      */
     @Bean(OPENAI_CHAT_CLIENT_QUALIFIER_WITH_MEMORY)
@@ -104,14 +96,21 @@ public class AIProviderConfig {
     /**
      * stores in a concurrent hash map
      * can use to set max messages in memory
+     *
+     * no explicit qualifier needed (CHAT_MEMORY_NON_JDBC)
+     * auto config of dependency registers bean
+     * spring checks for bean, if jdbc absent creates the one in memory
+     *
      * @param chatMemoryRepository
      * @return
      */
-    @Bean(CHAT_MEMORY_NON_JDBC)
+    @Bean
     ChatMemory chatMemory(ChatMemoryRepository chatMemoryRepository) {
         return MessageWindowChatMemory.builder()
                 .chatMemoryRepository(chatMemoryRepository)
                 .maxMessages(20)
                 .build();
     }
+
+
 }
