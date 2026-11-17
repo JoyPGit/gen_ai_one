@@ -133,7 +133,7 @@ public class AIProviderConfig {
 
     @Bean(PG_VECTOR_STORE)
     PgVectorStore pgVectorStore(JdbcTemplate jdbcTemplate,
-            @Qualifier("openAiEmbeddingModel") EmbeddingModel embeddingModel) {
+            @Qualifier(OPENAI_EMBEDDING_MODEL) EmbeddingModel embeddingModel) {
         return PgVectorStore.builder(jdbcTemplate, embeddingModel)
                 .initializeSchema(true)
                 .build();

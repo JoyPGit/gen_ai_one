@@ -23,7 +23,7 @@ public class DockerModelRunnerWithMemoryVectorController {
 
 
     DockerModelRunnerWithMemoryVectorController(@Qualifier(OPENAI_CHAT_CLIENT_QUALIFIER_WITH_MEMORY_VECTOR) ChatClient chatClient, OrderStatusTools orderStatusTools, ChatMemory chatMemory,
-            @Qualifier("openAiEmbeddingModel") EmbeddingModel embeddingModel) {
+            @Qualifier(OPENAI_EMBEDDING_MODEL) EmbeddingModel embeddingModel) {
         this.chatClient = chatClient;
         this.orderStatusTools = orderStatusTools;
         this.chatMemory = chatMemory;

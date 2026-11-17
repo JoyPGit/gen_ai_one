@@ -17,4 +17,5 @@ public class Constants {
     public static final String OBJECT_MAPPER = "objectMapper";
     public static final String CHAT_MEMORY_NON_JDBC = "chatMemoryNonJdbc";
     public static final String PG_VECTOR_STORE = "pgVectorStore";
+    public static final String OPENAI_EMBEDDING_MODEL = "openAiEmbeddingModel";
 }
