@@ -28,8 +28,12 @@ dependencies {
     implementation "ai.djl.sentencepiece:sentencepiece:0.22.1"
     implementation 'com.knuddels:jtokkit:1.1.0'
     // maintain via bom, no version
+    // chat memory repository jdbc
     implementation 'org.springframework.ai:spring-ai-starter-model-chat-memory-repository-jdbc'
     runtimeOnly 'org.postgresql:postgresql'
+    // chat memory vector store
+    implementation("org.springframework.ai:spring-ai-advisors-vector-store:2.0.0-M8")
+    implementation("org.springframework.ai:spring-ai-starter-vector-store-pgvector:2.0.2")
     // runtimeOnly("io.netty:netty-resolver-dns-native-macos:osx-aarch_64")
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'

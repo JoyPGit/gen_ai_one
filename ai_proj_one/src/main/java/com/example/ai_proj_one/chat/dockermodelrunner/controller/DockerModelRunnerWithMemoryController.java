@@ -26,7 +26,8 @@ public class DockerModelRunnerWithMemoryController {
     }
 
 
-    private final static String SYSTEM_PROMPT = " You are Order Helper, a virtual assistant that helps users track their orders. " +
+    private final static String SYSTEM_PROMPT = " You are Order Helper, a virtual " +
+            "assistant that helps users track their orders. " +
             "Your tasks" +
             "- assist the user with checking, the shipping status of their " +
             "orders. " +
@@ -37,7 +38,8 @@ public class DockerModelRunnerWithMemoryController {
             "help with order tracking" +
             "Guidelines: " +
             "- Do not support statuses; only use the tool for that information. " +
-            "- If you can find the order ID from chat memory, use it to answer directly; otherwise politely ask the user to provide it. " +
+            "- If you can find the order ID from chat memory, use it to answer " +
+            "directly; otherwise politely ask the user to provide it. " +
             "- Keep responses short, clear, and customer-friendly. Respond by naming " +
             "the customer and asking for further help.";
 
@@ -54,7 +56,7 @@ public class DockerModelRunnerWithMemoryController {
 
     /**
      * ChatMemory.CONVERSATION_ID is overridden by userId
-     *
+     * <p>
      * check before and after using MessageChatMemoryAdvisor
      * initially it has no entries, and 2 entries are made user_message and
      * assistant_message, which stores what the LLM replied
@@ -70,7 +72,7 @@ public class DockerModelRunnerWithMemoryController {
         chatMemory.get(userId).forEach(m -> log.info("{} : {}", m.getMessageType(),
                 m.getMetadata()));
 
-        String userMsg = message + ". user-id: "+ userId;
+        String userMsg = message + ". user-id: " + userId;
         return chatClient.prompt()
                 .tools(orderStatusTools)
                 .system(SYSTEM_PROMPT)

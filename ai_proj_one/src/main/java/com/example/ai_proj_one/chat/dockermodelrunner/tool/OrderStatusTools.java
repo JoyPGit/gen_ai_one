@@ -2,12 +2,14 @@ package com.example.ai_proj_one.chat.dockermodelrunner.tool;
 
 import com.example.ai_proj_one.chat.dockermodelrunner.dto.*;
 import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.tool.annotation.*;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Slf4j
 @Component
 public class OrderStatusTools {
     private final Map<String, Order> orders = new ConcurrentHashMap<>();
@@ -39,6 +41,7 @@ public class OrderStatusTools {
             @ToolParam(description = "User Id") String userId) {
         Order order = this.orders.getOrDefault(orderId, null);
 
+        log.info("orderId=[{}], userId=[{}]", orderId, userId);
         if(Objects.isNull(order)) {
             return "Order not found";
         }

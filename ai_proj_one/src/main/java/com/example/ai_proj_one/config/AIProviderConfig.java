@@ -4,10 +4,14 @@ import com.example.ai_proj_one.chat.advisor.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.*;
+import org.springframework.ai.chat.client.advisor.vectorstore.VectorStoreChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.*;
+import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.openai.OpenAiChatModel;
+import org.springframework.ai.vectorstore.pgvector.PgVectorStore;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.*;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
 
@@ -48,6 +52,20 @@ public class AIProviderConfig {
                                 ChatMemory chatMemory) {
         return ChatClient.builder(openAiChatModel)
                 .defaultAdvisors(MessageChatMemoryAdvisor.builder(chatMemory).build())
+                .build();
+    }
+
+    /**
+     * the pgVector needs to use distance based on the embedding used
+     * specify the embedding using a new bean, defined at the bottom
+     */
+    @Bean(OPENAI_CHAT_CLIENT_QUALIFIER_WITH_MEMORY_VECTOR)
+    ChatClient openAIChatClientWithMemoryVector(OpenAiChatModel openAiChatModel,
+            @Qualifier(PG_VECTOR_STORE) PgVectorStore pgVectorStore) {
+        return ChatClient.builder(openAiChatModel)
+                .defaultAdvisors(VectorStoreChatMemoryAdvisor.builder(pgVectorStore)
+                        .order(ToolCallingAdvisor.DEFAULT_ORDER - 1)
+                        .build())
                 .build();
     }
 
@@ -109,6 +127,15 @@ public class AIProviderConfig {
         return MessageWindowChatMemory.builder()
                 .chatMemoryRepository(chatMemoryRepository)
                 .maxMessages(20)
+                .build();
+    }
+
+
+    @Bean(PG_VECTOR_STORE)
+    PgVectorStore pgVectorStore(JdbcTemplate jdbcTemplate,
+            @Qualifier("openAiEmbeddingModel") EmbeddingModel embeddingModel) {
+        return PgVectorStore.builder(jdbcTemplate, embeddingModel)
+                .initializeSchema(true)
                 .build();
     }
 
