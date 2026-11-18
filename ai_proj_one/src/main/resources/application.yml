@@ -46,7 +46,7 @@ spring:
 #      embedding:
 #        options:
 #          model: text-embedding-3-small
-#     for docker model runner
+###     for docker model runner
 #      api-key: dummy_string #${OPENAI_API_KEY}
 #      base-url: http://localhost:12434/engines/llama.cpp/v1 # using docker url
 #      chat:

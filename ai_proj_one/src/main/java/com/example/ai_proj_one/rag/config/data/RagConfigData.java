@@ -12,8 +12,8 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "app.rag")
 public class RagConfigData {
     private boolean forceRebuild;
-    private String topK;
-    private String similarityThreshold;
+    private int topK;
+    private int similarityThreshold;
     private ChunkProperties chunk;
 
     @Data

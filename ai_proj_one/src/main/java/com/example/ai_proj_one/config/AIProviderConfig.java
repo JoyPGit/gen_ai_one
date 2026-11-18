@@ -1,13 +1,15 @@
 package com.example.ai_proj_one.config;
 
 import com.example.ai_proj_one.chat.advisor.*;
+import com.example.ai_proj_one.rag.config.data.RagConfigData;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.*;
-import org.springframework.ai.chat.client.advisor.vectorstore.VectorStoreChatMemoryAdvisor;
+import org.springframework.ai.chat.client.advisor.vectorstore.*;
 import org.springframework.ai.chat.memory.*;
 import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.openai.OpenAiChatModel;
+import org.springframework.ai.vectorstore.*;
 import org.springframework.ai.vectorstore.pgvector.PgVectorStore;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.*;
@@ -66,6 +68,29 @@ public class AIProviderConfig {
                 .defaultAdvisors(VectorStoreChatMemoryAdvisor.builder(pgVectorStore)
                         .order(ToolCallingAdvisor.DEFAULT_ORDER - 1)
                         .build())
+                .build();
+    }
+
+
+    /**
+     * 2 advisors
+     * question answer advisor
+     * Simple logger advisor
+     */
+    @Bean(OPENAI_RAG_CHAT_CLIENT_QUALIFIER)
+    ChatClient openAIRagChatClient(OpenAiChatModel openAiChatModel,
+            @Qualifier(SIMPLE_VECTOR_STORE) SimpleVectorStore simpleVectorStore,
+            SimpleLoggerAdvisor simpleLoggerAdvisor,
+            RagConfigData ragConfigData
+            ) {
+        return ChatClient.builder(openAiChatModel)
+                .defaultAdvisors(QuestionAnswerAdvisor.builder(simpleVectorStore)
+                        .searchRequest(SearchRequest.builder()
+                                .topK(ragConfigData.getTopK())
+                                .similarityThreshold(ragConfigData.getSimilarityThreshold())
+                                .build())
+//                        .order(ToolCallingAdvisor.DEFAULT_ORDER - 1)
+                        .build(), simpleLoggerAdvisor)
                 .build();
     }
 

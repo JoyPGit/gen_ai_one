@@ -16,7 +16,7 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import java.io.*;
 import java.util.*;
 
-import static com.example.ai_proj_one.utils.Constants.OPENAI_EMBEDDING_MODEL;
+import static com.example.ai_proj_one.utils.Constants.*;
 
 /**
  * ingestion pipeline
@@ -50,7 +50,16 @@ public class SimpleRagConfiguration {
                 .withKeepSeparator(ragConfigData.getChunk().isKeepSeparator())
                 .build();
     }
-    @Bean
+
+    /**
+     * returns a concurrent hash map
+     * @param embeddingModel
+     * @param tokenTextSplitter
+     * @param ragConfigData
+     * @return
+     * @throws IOException
+     */
+    @Bean(SIMPLE_VECTOR_STORE)
     public SimpleVectorStore simpleVectorStore(
             @Qualifier(OPENAI_EMBEDDING_MODEL) EmbeddingModel embeddingModel,
             TokenTextSplitter tokenTextSplitter,
