@@ -1,7 +1,7 @@
 package com.example.ai_proj_one.config;
 
 import com.example.ai_proj_one.chat.advisor.*;
-import com.example.ai_proj_one.rag.config.data.RagConfigData;
+import com.example.ai_proj_one.rag.config.data.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.*;
@@ -9,6 +9,9 @@ import org.springframework.ai.chat.client.advisor.vectorstore.*;
 import org.springframework.ai.chat.memory.*;
 import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.openai.OpenAiChatModel;
+import org.springframework.ai.rag.advisor.RetrievalAugmentationAdvisor;
+import org.springframework.ai.rag.generation.augmentation.ContextualQueryAugmenter;
+import org.springframework.ai.rag.retrieval.search.VectorStoreDocumentRetriever;
 import org.springframework.ai.vectorstore.*;
 import org.springframework.ai.vectorstore.pgvector.PgVectorStore;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -63,7 +66,7 @@ public class AIProviderConfig {
      */
     @Bean(OPENAI_CHAT_CLIENT_QUALIFIER_WITH_MEMORY_VECTOR)
     ChatClient openAIChatClientWithMemoryVector(OpenAiChatModel openAiChatModel,
-            @Qualifier(PG_VECTOR_STORE) PgVectorStore pgVectorStore) {
+            @Qualifier(PG_VECTOR_STORE_CHAT_MEMORY) PgVectorStore pgVectorStore) {
         return ChatClient.builder(openAiChatModel)
                 .defaultAdvisors(VectorStoreChatMemoryAdvisor.builder(pgVectorStore)
                         .order(ToolCallingAdvisor.DEFAULT_ORDER - 1)
@@ -74,7 +77,7 @@ public class AIProviderConfig {
 
     /**
      * 2 advisors
-     * question answer advisor
+     * QuestionAnswerAdvisor
      * Simple logger advisor
      */
     @Bean(OPENAI_RAG_CHAT_CLIENT_QUALIFIER)
@@ -92,6 +95,33 @@ public class AIProviderConfig {
 //                        .order(ToolCallingAdvisor.DEFAULT_ORDER - 1)
                         .build(), simpleLoggerAdvisor)
                 .build();
+    }
+
+    /**
+     * RetrievalAugmentationAdvisor
+     * pg vector store auto config needs embedding model, we have both openai and ollama
+     * embedding
+     */
+    @Bean(OPENAI_ADVANCED_RAG_CHAT_CLIENT_QUALIFIER)
+    ChatClient openAIAdvancedRagChatClient(OpenAiChatModel openAiChatModel,
+            RetrievalAugmentationAdvisor retrievalAugmentationAdvisor,
+            SimpleLoggerAdvisor simpleLoggerAdvisor,
+            RagConfigData ragConfigData
+    ) {
+        return ChatClient.builder(openAiChatModel)
+                .defaultAdvisors(retrievalAugmentationAdvisor)
+                .build();
+    }
+
+    /**
+     * primary hence this bean will be injected, instead of ollama's
+     * @param embeddingModel
+     * @return
+     */
+    @Bean
+    @Primary
+    EmbeddingModel embeddingModel(@Qualifier(OPENAI_EMBEDDING_MODEL) EmbeddingModel embeddingModel) {
+        return embeddingModel;
     }
 
     @Bean(VERTEXAI_CHAT_CLIENT_QUALIFIER)
@@ -156,13 +186,47 @@ public class AIProviderConfig {
     }
 
 
-    @Bean(PG_VECTOR_STORE)
-    PgVectorStore pgVectorStore(JdbcTemplate jdbcTemplate,
-            @Qualifier(OPENAI_EMBEDDING_MODEL) EmbeddingModel embeddingModel) {
+    @Bean(PG_VECTOR_STORE_CHAT_MEMORY)
+    PgVectorStore pgVectorStoreChatMemory(JdbcTemplate jdbcTemplate,
+            @Qualifier(OPENAI_EMBEDDING_MODEL) EmbeddingModel embeddingModel,
+            PgVectorStoreConfigData configData) {
         return PgVectorStore.builder(jdbcTemplate, embeddingModel)
-                .initializeSchema(true)
+                .vectorTableName(configData.getTableNameForChatMemory())
+                .dimensions(configData.getDimensions())
+                .distanceType(PgVectorStore.PgDistanceType.valueOf(configData.getDistanceType()))
+                .indexType(PgVectorStore.PgIndexType.valueOf(configData.getIndexType()))
+                .maxDocumentBatchSize(configData.getMaxDocumentBatchSize())
+                .initializeSchema(configData.isInitializeSchema())
+                .build();
+    }
+
+    @Bean(PG_VECTOR_STORE_RAG)
+    PgVectorStore pgVectorStoreRag(JdbcTemplate jdbcTemplate,
+            @Qualifier(OPENAI_EMBEDDING_MODEL) EmbeddingModel embeddingModel,
+            PgVectorStoreConfigData configData) {
+        return PgVectorStore.builder(jdbcTemplate, embeddingModel)
+                .vectorTableName(configData.getTableNameForRag())
+                .dimensions(1536) // text-embedding-ada-002 requires 1056
+                .distanceType(PgVectorStore.PgDistanceType.valueOf(configData.getDistanceType()))
+                .indexType(PgVectorStore.PgIndexType.valueOf(configData.getIndexType()))
+                .maxDocumentBatchSize(configData.getMaxDocumentBatchSize())
+                .initializeSchema(configData.isInitializeSchema())
                 .build();
     }
 
 
+
+    @Bean
+    RetrievalAugmentationAdvisor retrievalAugmentationAdvisor(@Qualifier(PG_VECTOR_STORE_RAG) VectorStore vectorStore, RagConfigData configData) {
+        return RetrievalAugmentationAdvisor.builder()
+                .documentRetriever(VectorStoreDocumentRetriever.builder()
+                        .vectorStore(vectorStore)
+                        .topK(configData.getTopK())
+                        .similarityThreshold(configData.getSimilarityThreshold())
+                        .build())
+                .queryAugmenter(ContextualQueryAugmenter.builder()
+                        .allowEmptyContext(false) // if empty don't proceed
+                        .build())
+                .build();
+    }
 }

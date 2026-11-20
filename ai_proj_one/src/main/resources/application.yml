@@ -12,6 +12,13 @@ app:
       min-chunk-to-embed: 50
       max-num-chunks: 8192
       keep-separator: true
+    pdf:
+      mode: page # paragraph
+      path: file:/Users/swagatpatra/Desktop/WORK/AI/rag-files/*.pdf
+      pages-per-document: 1
+      left-alignment: true
+      number-of-text-lines-to-delete: 0
+      number-of-bottom-text-lines-to-delete: 0
 spring:
   application:
     name: gen-ai-java-spring
@@ -32,6 +39,8 @@ spring:
             initialize-schema: always
     vectorstore:
       pgvector:
+        table-name-for-chat-memory: vector_store # default
+        table-name-for-rag: rag_vector_store # default
         initialize-schema: true
         index-type: HNSW
         distance-type: COSINE_DISTANCE

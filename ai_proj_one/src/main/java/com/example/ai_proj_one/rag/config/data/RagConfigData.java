@@ -13,8 +13,9 @@ import org.springframework.context.annotation.Configuration;
 public class RagConfigData {
     private boolean forceRebuild;
     private int topK;
-    private int similarityThreshold;
+    private Double similarityThreshold;
     private ChunkProperties chunk;
+    private PdfProperties pdf; // same key name as in application.yml
 
     @Data
     public static class ChunkProperties {
@@ -23,5 +24,15 @@ public class RagConfigData {
         private int minChunkToEmbed;
         private int maxNumChunks;
         private boolean keepSeparator;
+    }
+
+    @Data
+    public static class PdfProperties {
+        private String mode;
+        private String path;
+        private int pagesPerDocument;
+        private boolean leftAlignment;
+        private int numberOfTextLinesToDelete;
+        private int numberOfBottomTextLinesToDelete;
     }
 }

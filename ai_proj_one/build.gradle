@@ -34,6 +34,13 @@ dependencies {
     // chat memory vector store
     implementation("org.springframework.ai:spring-ai-advisors-vector-store:2.0.0-M8")
     implementation("org.springframework.ai:spring-ai-starter-vector-store-pgvector:2.0.2")
+    // RAG
+    // jdbc auto-config
+    implementation("org.springframework.boot:spring-boot-starter-jdbc")
+    // RAG Advisor and modules
+    implementation("org.springframework.ai:spring-ai-rag")
+    // document readers and splitters (pdf readers, formatters)
+    implementation("org.springframework.ai:spring-ai-pdf-document-reader")
     // runtimeOnly("io.netty:netty-resolver-dns-native-macos:osx-aarch_64")
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
