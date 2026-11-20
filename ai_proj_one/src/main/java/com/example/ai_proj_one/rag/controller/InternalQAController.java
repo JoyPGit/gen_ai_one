@@ -5,6 +5,8 @@ import org.springframework.ai.rag.retrieval.search.VectorStoreDocumentRetriever;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
+import static com.example.ai_proj_one.utils.Constants.OPENAI_ADVANCED_RAG_CHAT_CLIENT_QUALIFIER;
+
 @RestController
 @RequestMapping("/api/internal-qa")
 public class InternalQAController {
@@ -20,7 +22,7 @@ public class InternalQAController {
             When citing, copy the header’s values exactly (do not simplify to [source:12] or change labels).
             """;
 
-    public InternalQAController(@Qualifier("openAIAdvancedRAGChatClient") ChatClient chatClient) {
+    public InternalQAController(@Qualifier(OPENAI_ADVANCED_RAG_CHAT_CLIENT_QUALIFIER) ChatClient chatClient) {
         this.chatClient = chatClient;
     }
 
