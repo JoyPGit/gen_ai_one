@@ -2,6 +2,7 @@ package com.example.ai_proj_one.config;
 
 import com.example.ai_proj_one.chat.advisor.*;
 import com.example.ai_proj_one.rag.config.data.*;
+import com.example.ai_proj_one.rag.preprocessor.DomainSynonymTransformer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.*;
@@ -217,8 +218,10 @@ public class AIProviderConfig {
 
 
     @Bean
-    RetrievalAugmentationAdvisor retrievalAugmentationAdvisor(@Qualifier(PG_VECTOR_STORE_RAG) VectorStore vectorStore, RagConfigData configData) {
+    RetrievalAugmentationAdvisor retrievalAugmentationAdvisor(@Qualifier(PG_VECTOR_STORE_RAG) VectorStore vectorStore, RagConfigData configData,
+            DomainSynonymTransformer domainSynonymTransformer) {
         return RetrievalAugmentationAdvisor.builder()
+                .queryTransformers(domainSynonymTransformer)
                 .documentRetriever(VectorStoreDocumentRetriever.builder()
                         .vectorStore(vectorStore)
                         .topK(configData.getTopK())

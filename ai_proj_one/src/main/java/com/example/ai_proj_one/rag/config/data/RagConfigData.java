@@ -4,6 +4,8 @@ import lombok.*;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Map;
+
 /**
  * to pick config keys from application.yml
  */
@@ -16,6 +18,7 @@ public class RagConfigData {
     private Double similarityThreshold;
     private ChunkProperties chunk;
     private PdfProperties pdf; // same key name as in application.yml
+    private Map<String, String> synonyms;
 
     @Data
     public static class ChunkProperties {
