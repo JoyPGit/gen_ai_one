@@ -2,8 +2,12 @@ server:
   port: 8081
 
 app:
+  agent:
+    upload-dir: /Users/swagatpatra/Desktop/WORK/uploads
+    diagram-tool:
+      temperature: 0.2 # low creativity for images
   rag:
-    force-rebuild: true
+    force-rebuild: false #true
     top-k: 4
     similarity-threshold: 0
     radius: 1 # first level neighbours
@@ -76,7 +80,8 @@ spring:
       api-key: ${OPENAI_API_KEY}
       chat:
         options:
-          model: gpt-6-luna #can use same as what is for the api key on openai webpage
+#          model: gpt-6-luna # can use same as what is for the api key on openai webpage
+          model: gpt-4.1 # vision model
           reasoning-effort: none
 #      embedding:
 #        options:
