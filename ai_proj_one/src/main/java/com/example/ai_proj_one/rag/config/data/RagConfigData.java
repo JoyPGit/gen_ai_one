@@ -16,6 +16,7 @@ public class RagConfigData {
     private boolean forceRebuild;
     private int topK;
     private Double similarityThreshold;
+    private int radius;
     private ChunkProperties chunk;
     private PdfProperties pdf; // same key name as in application.yml
     private Map<String, String> synonyms;

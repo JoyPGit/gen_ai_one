@@ -2,6 +2,7 @@ package com.example.ai_proj_one.config;
 
 import com.example.ai_proj_one.chat.advisor.*;
 import com.example.ai_proj_one.rag.config.data.*;
+import com.example.ai_proj_one.rag.postprocessor.NeighbourStitchPostProcessor;
 import com.example.ai_proj_one.rag.preprocessor.DomainSynonymTransformer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.ai.chat.client.ChatClient;
@@ -9,6 +10,7 @@ import org.springframework.ai.chat.client.advisor.*;
 import org.springframework.ai.chat.client.advisor.vectorstore.*;
 import org.springframework.ai.chat.memory.*;
 import org.springframework.ai.embedding.EmbeddingModel;
+import org.springframework.ai.ollama.OllamaChatModel;
 import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.ai.rag.advisor.RetrievalAugmentationAdvisor;
 import org.springframework.ai.rag.generation.augmentation.ContextualQueryAugmenter;
@@ -105,7 +107,7 @@ public class AIProviderConfig {
      */
     @Bean(OPENAI_ADVANCED_RAG_CHAT_CLIENT_QUALIFIER)
     ChatClient openAIAdvancedRagChatClient(OpenAiChatModel openAiChatModel,
-            RetrievalAugmentationAdvisor retrievalAugmentationAdvisor,
+            @Qualifier(RAG_ADVISOR_ADVANCED) RetrievalAugmentationAdvisor retrievalAugmentationAdvisor,
             SimpleLoggerAdvisor simpleLoggerAdvisor,
             RagConfigData ragConfigData
     ) {
@@ -136,7 +138,7 @@ public class AIProviderConfig {
     }
 
     @Bean(OLLAMAAI_CHAT_CLIENT_QUALIFIER)
-    ChatClient ollamaAIChatClient(OpenAiChatModel ollamaChatModel) {
+    ChatClient ollamaAIChatClient(OllamaChatModel ollamaChatModel) {
         return ChatClient.builder(ollamaChatModel).build();
     }
 
@@ -217,11 +219,13 @@ public class AIProviderConfig {
 
 
 
-    @Bean
+    @Bean(RAG_ADVISOR_ADVANCED)
     RetrievalAugmentationAdvisor retrievalAugmentationAdvisor(@Qualifier(PG_VECTOR_STORE_RAG) VectorStore vectorStore, RagConfigData configData,
-            DomainSynonymTransformer domainSynonymTransformer) {
+            DomainSynonymTransformer domainSynonymTransformer,
+            NeighbourStitchPostProcessor neighbourStitchPostProcessor) {
         return RetrievalAugmentationAdvisor.builder()
                 .queryTransformers(domainSynonymTransformer)
+                .documentPostProcessors(neighbourStitchPostProcessor)
                 .documentRetriever(VectorStoreDocumentRetriever.builder()
                         .vectorStore(vectorStore)
                         .topK(configData.getTopK())

@@ -24,4 +24,5 @@ public class Constants {
     public static final String PG_VECTOR_STORE_RAG = "pgVectorStoreRag";
     public static final String SIMPLE_VECTOR_STORE = "simpleVectorStore";
     public static final String OPENAI_EMBEDDING_MODEL = "openAiEmbeddingModel";
+    public static final String RAG_ADVISOR_ADVANCED = "ragAdvisorAdvanced";
 }

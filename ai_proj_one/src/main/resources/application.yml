@@ -6,6 +6,7 @@ app:
     force-rebuild: true
     top-k: 4
     similarity-threshold: 0
+    radius: 1 # first level neighbours
     chunk:
       size: 800
       min-chunk-size: 200
@@ -15,7 +16,7 @@ app:
     pdf:
       mode: page # paragraph
       path: file:/Users/swagatpatra/Desktop/WORK/AI/rag-files/*.pdf
-      pages-per-document: 1
+      pages-per-document: 1 # imp
       left-alignment: true
       number-of-text-lines-to-delete: 0
       number-of-bottom-text-lines-to-delete: 0

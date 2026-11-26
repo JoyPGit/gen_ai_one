@@ -14,7 +14,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public class OrderStatusTools {
     private final Map<String, Order> orders = new ConcurrentHashMap<>();
 
-
     @PostConstruct
     public void init() {
         for(int i =0; i<10; i++) {
