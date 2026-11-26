@@ -1,6 +1,59 @@
 server:
   port: 8081
 
+spring:
+  application:
+    name: gen-ai-java-spring
+  datasource:
+    url: jdbc:postgresql://localhost:5433/postgres?currentSchema=public&binaryTransfer=true&reWriteBatchedInserts=true&stringtype=unspecified
+    username: postgres
+    password: postgres
+#  sql:
+#    init:
+#      mode: always
+#      data-locations: classpath:/db/data.sql
+  ai:
+    chat:
+      memory:
+        repository:
+          jdbc:
+            # for local/dev , let Spring AI create automatically always
+            initialize-schema: always
+    vectorstore:
+      pgvector:
+        table-name-for-chat-memory: vector_store # default
+        table-name-for-rag: rag_vector_store # default
+        initialize-schema: true
+        index-type: HNSW
+        distance-type: COSINE_DISTANCE
+        dimensions: 1024
+        max-document-batch-size: 10_000
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      chat:
+        options:
+          model: gpt-5.2 #gpt-6-luna # can use same as what is for the api key on openai webpage
+          model-for-vision: gpt-4.1 # vision model
+          reasoning-effort: none
+#      embedding:
+#        options:
+#          model: text-embedding-3-small
+###     for docker model runner
+#      api-key: dummy_string #${OPENAI_API_KEY}
+#      base-url: http://localhost:12434/engines/llama.cpp/v1 # using docker url
+#      chat:
+#        options:
+#          model: hf.co/bartowski/google_gemma-3-1b-it-gguf:q4_k_m
+
+#    ollama:
+#      base-url: http://localhost:11434
+#      chat:
+#        options:
+#          model: qwen3.5:4b # ollama list
+#          max-new-tokens: 512
+#          temperature: 0.7
+
+
 app:
   agent:
     upload-dir: /Users/swagatpatra/Desktop/WORK/uploads
@@ -49,57 +102,7 @@ app:
       SSH: "secure shell"
       HTTP: "hypertext transfer protocol"
       HTTPS: "secure hypertext transfer protocol"
-spring:
-  application:
-    name: gen-ai-java-spring
-  datasource:
-    url: jdbc:postgresql://localhost:5433/postgres?currentSchema=public&binaryTransfer=true&reWriteBatchedInserts=true&stringtype=unspecified
-    username: postgres
-    password: postgres
-#  sql:
-#    init:
-#      mode: always
-#      data-locations: classpath:/db/data.sql
-  ai:
-    chat:
-      memory:
-        repository:
-          jdbc:
-            # for local/dev , let Spring AI create automatically always
-            initialize-schema: always
-    vectorstore:
-      pgvector:
-        table-name-for-chat-memory: vector_store # default
-        table-name-for-rag: rag_vector_store # default
-        initialize-schema: true
-        index-type: HNSW
-        distance-type: COSINE_DISTANCE
-        dimensions: 1024
-        max-document-batch-size: 10_000
-    openai:
-      api-key: ${OPENAI_API_KEY}
-      chat:
-        options:
-#          model: gpt-6-luna # can use same as what is for the api key on openai webpage
-          model: gpt-4.1 # vision model
-          reasoning-effort: none
-#      embedding:
-#        options:
-#          model: text-embedding-3-small
-###     for docker model runner
-#      api-key: dummy_string #${OPENAI_API_KEY}
-#      base-url: http://localhost:12434/engines/llama.cpp/v1 # using docker url
-#      chat:
-#        options:
-#          model: hf.co/bartowski/google_gemma-3-1b-it-gguf:q4_k_m
 
-#    ollama:
-#      base-url: http://localhost:11434
-#      chat:
-#        options:
-#          model: qwen3.5:4b # ollama list
-#          max-new-tokens: 512
-#          temperature: 0.7
 
 logging:
   level:

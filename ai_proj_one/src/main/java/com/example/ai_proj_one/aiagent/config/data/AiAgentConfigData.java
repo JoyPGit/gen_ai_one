@@ -22,6 +22,7 @@ public class AiAgentConfigData {
     private String uploadDir;
     private DiagramToolProperties diagramTool;
 
+    @Data
     public static class DiagramToolProperties {
         private Double temperature;
     }

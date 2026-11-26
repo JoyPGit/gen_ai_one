@@ -9,6 +9,7 @@ import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.*;
 import org.springframework.ai.chat.client.advisor.vectorstore.*;
 import org.springframework.ai.chat.memory.*;
+import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.ollama.OllamaChatModel;
 import org.springframework.ai.openai.OpenAiChatModel;
@@ -17,7 +18,7 @@ import org.springframework.ai.rag.generation.augmentation.ContextualQueryAugment
 import org.springframework.ai.rag.retrieval.search.VectorStoreDocumentRetriever;
 import org.springframework.ai.vectorstore.*;
 import org.springframework.ai.vectorstore.pgvector.PgVectorStore;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.*;
 import org.springframework.context.annotation.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -30,6 +31,9 @@ import static com.example.ai_proj_one.utils.Constants.*;
  */
 @Configuration
 public class AIProviderConfig {
+
+    @Value("${spring.ai.openai.chat.options.model-for-vision}")
+    private String openAIVisionModel;
 
     /**
      * the first advisor in the chain will be called first
@@ -113,6 +117,15 @@ public class AIProviderConfig {
     ) {
         return ChatClient.builder(openAiChatModel)
                 .defaultAdvisors(retrievalAugmentationAdvisor)
+                .build();
+    }
+
+    @Bean(OPENAI_AGENT_CHAT_CLIENT_VISION_QUALIFIER)
+    ChatClient openAIAgentChatClientVision(OpenAiChatModel openAiChatModel) {
+        return ChatClient.builder(openAiChatModel)
+                .defaultOptions(ChatOptions.builder()
+                        .model(openAIVisionModel)
+                        .build().mutate())
                 .build();
     }
 
