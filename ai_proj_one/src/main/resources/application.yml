@@ -59,6 +59,14 @@ app:
     upload-dir: /Users/swagatpatra/Desktop/WORK/uploads
     diagram-tool:
       temperature: 0.2 # low creativity for images
+    posture-tool:
+      url: http://localhost:8082/api/posture/{id}
+      env: prod
+    rag-tool:
+      similarity-threshold: 0.0
+      min-topK: 1
+      max-topK: 8
+      default-topK: 5
   rag:
     force-rebuild: false #true
     top-k: 4

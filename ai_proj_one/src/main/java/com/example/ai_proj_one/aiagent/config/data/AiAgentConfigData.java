@@ -1,5 +1,6 @@
 package com.example.ai_proj_one.aiagent.config.data;
 
+import com.example.ai_proj_one.aiagent.tools.rag.RagTools;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -21,9 +22,25 @@ public class AiAgentConfigData {
 
     private String uploadDir;
     private DiagramToolProperties diagramTool;
+    private PostureToolProperties postureTool;
+    private RagToolProperties ragTool;
 
     @Data
     public static class DiagramToolProperties {
         private Double temperature;
+    }
+
+    @Data
+    public static class PostureToolProperties {
+        private String url;
+        private String env;
+    }
+
+    @Data
+    public static class RagToolProperties {
+        private Double similarityThreshold;
+        private Integer minTopK;
+        private Integer maxTopK;
+        private Integer defaultTopK;
     }
 }
