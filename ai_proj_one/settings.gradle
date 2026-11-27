@@ -1,1 +1,2 @@
 rootProject.name = 'ai_proj_one'
+include 'posture-service'
