@@ -16,14 +16,14 @@ public class OrderStatusTools {
 
     @PostConstruct
     public void init() {
-        for(int i =0; i<10; i++) {
-            String orderId = "ORD-"+i;
+        for (int i = 0; i < 10; i++) {
+            String orderId = "ORD-" + i;
             Order order = Order.builder()
                     .orderId(orderId)
-                    .carrier(i%2 == 0?"Fedex":"UPS")
+                    .carrier(i % 2 == 0 ? "Fedex" : "UPS")
                     .status(OrderStatus.CREATED)
-                    .userId("user-"+i)
-                    .userName("User "+i)
+                    .userId("user-" + i)
+                    .userName("User " + i)
                     .build();
             orders.put(orderId, order);
         }
@@ -41,10 +41,10 @@ public class OrderStatusTools {
         Order order = this.orders.getOrDefault(orderId, null);
 
         log.info("orderId=[{}], userId=[{}]", orderId, userId);
-        if(Objects.isNull(order)) {
+        if (Objects.isNull(order)) {
             return "Order not found";
         }
-        if(!order.userId().equalsIgnoreCase(userId)) {
+        if (!order.userId().equalsIgnoreCase(userId)) {
             return "This " + orderId + " doesn't belong to this user";
         }
 
@@ -60,7 +60,8 @@ public class OrderStatusTools {
                 .build();
         orders.put(orderId, updatedOrder);
 
-        return "Order " + orderId + " for user name "+ order.userName() + "is currently" +
+        return "Order " + orderId + " for user name " + order.userName() + "is " +
+                "currently" +
                 " at status " + order.status();
     }
 

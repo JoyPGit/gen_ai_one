@@ -130,6 +130,17 @@ public class AIProviderConfig {
     }
 
     /**
+     * no memory, no advisors, bare-bones chat client
+     * @param openAiChatModel
+     * @return
+     */
+    @Bean(OPENAI_AGENT_CHAT_CLIENT)
+    ChatClient openAIAgentChatClient(OpenAiChatModel openAiChatModel) {
+        return ChatClient.builder(openAiChatModel)
+                .build();
+    }
+
+    /**
      * primary hence this bean will be injected, instead of ollama's
      * @param embeddingModel
      * @return

@@ -1,6 +1,6 @@
 package com.example.ai_proj_one.aiagent.service.impl;
 
-import com.example.ai_proj_one.aiagent.config.data.AiAgentConfigData;
+import com.example.ai_proj_one.aiagent.agent.data.AiAgentConfigData;
 import com.example.ai_proj_one.aiagent.exception.SecurityReviewAgentException;
 import com.example.ai_proj_one.aiagent.service.FileStorageService;
 import org.springframework.stereotype.Service;

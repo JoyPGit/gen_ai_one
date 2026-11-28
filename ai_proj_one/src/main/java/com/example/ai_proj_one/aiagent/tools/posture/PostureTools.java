@@ -1,6 +1,6 @@
 package com.example.ai_proj_one.aiagent.tools.posture;
 
-import com.example.ai_proj_one.aiagent.config.data.AiAgentConfigData;
+import com.example.ai_proj_one.aiagent.agent.data.AiAgentConfigData;
 import com.example.ai_proj_one.aiagent.tools.posture.records.PostureArgs;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.tool.annotation.Tool;

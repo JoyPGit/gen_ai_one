@@ -13,6 +13,9 @@ public class Constants {
             "openAIAdvancedRagChatClientQualifier";
     public static final String OPENAI_AGENT_CHAT_CLIENT_VISION_QUALIFIER =
             "openAIAgentChatClientVision";
+    public static final String OPENAI_AGENT_CHAT_CLIENT =
+            "openAIAgentChatClient";
+
     public static final String VERTEXAI_CHAT_CLIENT_QUALIFIER =
             "vertexAIChatClientQualifier";
     public static final String HUGGINGFACEAI_CHAT_CLIENT_QUALIFIER =

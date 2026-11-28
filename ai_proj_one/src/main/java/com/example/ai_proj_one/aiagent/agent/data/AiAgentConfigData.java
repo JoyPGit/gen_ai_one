@@ -1,6 +1,5 @@
-package com.example.ai_proj_one.aiagent.config.data;
+package com.example.ai_proj_one.aiagent.agent.data;
 
-import com.example.ai_proj_one.aiagent.tools.rag.RagTools;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;

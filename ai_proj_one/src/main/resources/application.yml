@@ -32,8 +32,8 @@ spring:
       api-key: ${OPENAI_API_KEY}
       chat:
         options:
-          model: gpt-5.2 #gpt-6-luna # can use same as what is for the api key on openai webpage
-          model-for-vision: gpt-4.1 # vision model
+          model: gpt-4o-mini #gpt-5.2 #gpt-6-luna # can use same as what is for the api key on openai webpage
+          model-for-vision: gpt-4.1-mini # vision model
           reasoning-effort: none
 #      embedding:
 #        options:

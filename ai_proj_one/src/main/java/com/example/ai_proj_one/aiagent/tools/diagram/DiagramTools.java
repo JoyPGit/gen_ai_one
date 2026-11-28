@@ -1,6 +1,6 @@
 package com.example.ai_proj_one.aiagent.tools.diagram;
 
-import com.example.ai_proj_one.aiagent.config.data.AiAgentConfigData;
+import com.example.ai_proj_one.aiagent.agent.data.AiAgentConfigData;
 import com.example.ai_proj_one.aiagent.service.FileStorageService;
 import com.example.ai_proj_one.aiagent.tools.diagram.records.*;
 import lombok.extern.slf4j.Slf4j;
